@@ -18,10 +18,10 @@ public class QuarantineArea {
 	private String password;
 	private String address;
 	private Region region;
-	private List<ObjectId> guestList;
-	private List<ObjectId> ticketList;
-	private List<ObjectId> postList;
-	private List<ObjectId> regulationList;
+	private List<Guest> guestList;
+	private List<Ticket> ticketList;
+	private List<Post> postList;
+	private List<Regulation> regulationList;
 
 	private enum Region {
 		MIEN_BAC, MIEN_TRUNG, MIEN_NAM
@@ -63,35 +63,35 @@ public class QuarantineArea {
 		this.region = region;
 	}
 
-	public List<ObjectId> getGuestList() {
+	public List<Guest> getGuestList() {
 		return guestList;
 	}
 
-	public void setGuestList(List<ObjectId> guestList) {
+	public void setGuestList(List<Guest> guestList) {
 		this.guestList = guestList;
 	}
 
-	public List<ObjectId> getTicketList() {
+	public List<Ticket> getTicketList() {
 		return ticketList;
 	}
 
-	public void setTicketList(List<ObjectId> ticketList) {
+	public void setTicketList(List<Ticket> ticketList) {
 		this.ticketList = ticketList;
 	}
 
-	public List<ObjectId> getPostList() {
+	public List<Post> getPostList() {
 		return postList;
 	}
 
-	public void setPostList(List<ObjectId> postList) {
+	public void setPostList(List<Post> postList) {
 		this.postList = postList;
 	}
 
-	public List<ObjectId> getRegulationList() {
+	public List<Regulation> getRegulationList() {
 		return regulationList;
 	}
 
-	public void setRegulationList(List<ObjectId> regulationList) {
+	public void setRegulationList(List<Regulation> regulationList) {
 		this.regulationList = regulationList;
 	}
 

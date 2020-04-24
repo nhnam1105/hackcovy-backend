@@ -22,8 +22,6 @@ public class Ticket {
 	private boolean isEmergent;
 	private boolean isSolved;
 	private String roomNumber;
-	private ObjectId QRTAreaID;
-	private ObjectId GuestID;
 
 	public ObjectId getId() {
 		return id;
@@ -97,34 +95,17 @@ public class Ticket {
 		this.roomNumber = roomNumber;
 	}
 
-	public ObjectId getQRTAreaID() {
-		return QRTAreaID;
-	}
-
-	public void setQRTAreaID(ObjectId qRTAreaID) {
-		QRTAreaID = qRTAreaID;
-	}
-
-	public ObjectId getGuestID() {
-		return GuestID;
-	}
-
-	public void setGuestID(ObjectId guestID) {
-		GuestID = guestID;
-	}
-
 	@Override
 	public String toString() {
 		return "Ticket{id=" + id + ", subject=" + subject + ", content=" + content + ", createdDate=" + createdDate
 				+ ", creatorName=" + creatorName + ", creatorDOB=" + creatorDOB + ", isEmergent=" + isEmergent
-				+ ", isSolved=" + isSolved + ", roomNumber=" + roomNumber + ", QRTAreaID=" + QRTAreaID + ", GuestID="
-				+ GuestID + "}";
+				+ ", isSolved=" + isSolved + ", roomNumber=" + roomNumber + "}";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(GuestID, QRTAreaID, content, createdDate, creatorDOB, creatorName, id, isEmergent, isSolved,
-				roomNumber, subject);
+		return Objects.hash(content, createdDate, creatorDOB, creatorName, id, isEmergent, isSolved, roomNumber,
+				subject);
 	}
 
 	@Override
@@ -136,8 +117,7 @@ public class Ticket {
 		if (getClass() != obj.getClass())
 			return false;
 		Ticket other = (Ticket) obj;
-		return Objects.equals(GuestID, other.GuestID) && Objects.equals(QRTAreaID, other.QRTAreaID)
-				&& Objects.equals(content, other.content) && Objects.equals(createdDate, other.createdDate)
+		return Objects.equals(content, other.content) && Objects.equals(createdDate, other.createdDate)
 				&& Objects.equals(creatorDOB, other.creatorDOB) && Objects.equals(creatorName, other.creatorName)
 				&& Objects.equals(id, other.id) && isEmergent == other.isEmergent && isSolved == other.isSolved
 				&& Objects.equals(roomNumber, other.roomNumber) && Objects.equals(subject, other.subject);

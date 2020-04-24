@@ -15,8 +15,7 @@ public class Contact {
 	private ObjectId id;
 	private String contactName;
 	private String contactNumber;
-	private ObjectId QRTAreaID;
-	
+
 	public ObjectId getId() {
 		return id;
 	}
@@ -41,23 +40,14 @@ public class Contact {
 		this.contactNumber = contactNumber;
 	}
 
-	public ObjectId getQRTAreaID() {
-		return QRTAreaID;
-	}
-
-	public void setQRTAreaID(ObjectId qRTAreaID) {
-		QRTAreaID = qRTAreaID;
-	}
-
 	@Override
 	public String toString() {
-		return "Contact{id=" + id + ", contactName=" + contactName + ", contactNumber=" + contactNumber + ", QRTAreaID="
-				+ QRTAreaID + "}";
+		return "Contact{id=" + id + ", contactName=" + contactName + ", contactNumber=" + contactNumber + "}";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(QRTAreaID, contactName, contactNumber, id);
+		return Objects.hash(contactName, contactNumber, id);
 	}
 
 	@Override
@@ -69,8 +59,8 @@ public class Contact {
 		if (getClass() != obj.getClass())
 			return false;
 		Contact other = (Contact) obj;
-		return Objects.equals(QRTAreaID, other.QRTAreaID) && Objects.equals(contactName, other.contactName)
-				&& Objects.equals(contactNumber, other.contactNumber) && Objects.equals(id, other.id);
+		return Objects.equals(contactName, other.contactName) && Objects.equals(contactNumber, other.contactNumber)
+				&& Objects.equals(id, other.id);
 	}
 
 }

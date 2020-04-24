@@ -16,7 +16,6 @@ public class Regulation {
 	private String content;
 	private String category;
 	private int sortingOrder;
-	private ObjectId QRTAreaID;
 
 	public ObjectId getId() {
 		return id;
@@ -50,23 +49,15 @@ public class Regulation {
 		this.sortingOrder = sortingOrder;
 	}
 
-	public ObjectId getQRTAreaID() {
-		return QRTAreaID;
-	}
-
-	public void setQRTAreaID(ObjectId qRTAreaID) {
-		QRTAreaID = qRTAreaID;
-	}
-
 	@Override
 	public String toString() {
 		return "Regulation{id=" + id + ", content=" + content + ", category=" + category + ", sortingOrder="
-				+ sortingOrder + ", QRTAreaID=" + QRTAreaID + "}";
+				+ sortingOrder + "}";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(QRTAreaID, category, content, id, sortingOrder);
+		return Objects.hash(category, content, id, sortingOrder);
 	}
 
 	@Override
@@ -78,9 +69,8 @@ public class Regulation {
 		if (getClass() != obj.getClass())
 			return false;
 		Regulation other = (Regulation) obj;
-		return Objects.equals(QRTAreaID, other.QRTAreaID) && Objects.equals(category, other.category)
-				&& Objects.equals(content, other.content) && Objects.equals(id, other.id)
-				&& sortingOrder == other.sortingOrder;
+		return Objects.equals(category, other.category) && Objects.equals(content, other.content)
+				&& Objects.equals(id, other.id) && sortingOrder == other.sortingOrder;
 	}
 
 }
