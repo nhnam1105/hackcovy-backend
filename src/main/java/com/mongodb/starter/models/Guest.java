@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Guest {
 
 	@JsonSerialize(using = ToStringSerializer.class)
-    private ObjectId id;
+	private ObjectId id;
 	private String firstName;
 	private String lastName;
 	private Date DOB;
@@ -22,8 +22,9 @@ public class Guest {
 	private Date dateOfAdmission;
 	private Gender gender;
 	private String roomNumber;
-	private List<Ticket> ticketList;
+	private List<ObjectId> ticketList;
 	private String note;
+	private ObjectId QRTAreaID;
 
 	private enum Status {
 		HEALTHY, SHOWING_SYMPTOMS, INFECTED
@@ -97,11 +98,11 @@ public class Guest {
 		this.roomNumber = roomNumber;
 	}
 
-	public List<Ticket> getTicketList() {
+	public List<ObjectId> getTicketList() {
 		return ticketList;
 	}
 
-	public void setTicketList(List<Ticket> ticketList) {
+	public void setTicketList(List<ObjectId> ticketList) {
 		this.ticketList = ticketList;
 	}
 
@@ -113,16 +114,24 @@ public class Guest {
 		this.note = note;
 	}
 
+	public ObjectId getQRTAreaID() {
+		return QRTAreaID;
+	}
+
+	public void setQRTAreaID(ObjectId qRTAreaID) {
+		QRTAreaID = qRTAreaID;
+	}
+
 	@Override
 	public String toString() {
 		return "Guest{id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", DOB=" + DOB + ", status="
 				+ status + ", dateOfAdmission=" + dateOfAdmission + ", gender=" + gender + ", roomNumber=" + roomNumber
-				+ ", ticketList=" + ticketList + ", note=" + note + "}";
+				+ ", ticketList=" + ticketList + ", note=" + note + ", QRTAreaID=" + QRTAreaID + "}";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(DOB, dateOfAdmission, firstName, gender, id, lastName, note, roomNumber, status,
+		return Objects.hash(DOB, QRTAreaID, dateOfAdmission, firstName, gender, id, lastName, note, roomNumber, status,
 				ticketList);
 	}
 
@@ -135,11 +144,11 @@ public class Guest {
 		if (getClass() != obj.getClass())
 			return false;
 		Guest other = (Guest) obj;
-		return Objects.equals(DOB, other.DOB) && Objects.equals(dateOfAdmission, other.dateOfAdmission)
-				&& Objects.equals(firstName, other.firstName) && gender == other.gender && Objects.equals(id, other.id)
-				&& Objects.equals(lastName, other.lastName) && Objects.equals(note, other.note)
-				&& Objects.equals(roomNumber, other.roomNumber) && status == other.status
-				&& Objects.equals(ticketList, other.ticketList);
+		return Objects.equals(DOB, other.DOB) && Objects.equals(QRTAreaID, other.QRTAreaID)
+				&& Objects.equals(dateOfAdmission, other.dateOfAdmission) && Objects.equals(firstName, other.firstName)
+				&& gender == other.gender && Objects.equals(id, other.id) && Objects.equals(lastName, other.lastName)
+				&& Objects.equals(note, other.note) && Objects.equals(roomNumber, other.roomNumber)
+				&& status == other.status && Objects.equals(ticketList, other.ticketList);
 	}
 
 }

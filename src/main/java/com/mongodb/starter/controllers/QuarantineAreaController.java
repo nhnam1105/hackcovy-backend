@@ -35,6 +35,10 @@ public class QuarantineAreaController {
 		return quarantineAreaRepository.saveAll(quarantineAreas);
 	}
 
+	// TODO: @PostMapping("quarantine_area/{id}/guest")
+
+	// TODO: @PostMapping("quarantine_area/{id}/guests")
+
 	@GetMapping("quarantine_areas")
 	public List<QuarantineArea> getQuarantineAreas() {
 		return quarantineAreaRepository.findAll();

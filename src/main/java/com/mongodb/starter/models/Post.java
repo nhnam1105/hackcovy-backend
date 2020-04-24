@@ -19,6 +19,7 @@ public class Post {
 	private String mediaURL;
 	private Date createdDate;
 	private String creatorName;
+	private ObjectId QRTAreaID;
 
 	public ObjectId getId() {
 		return id;
@@ -68,15 +69,23 @@ public class Post {
 		this.creatorName = creatorName;
 	}
 
+	public ObjectId getQRTAreaID() {
+		return QRTAreaID;
+	}
+
+	public void setQRTAreaID(ObjectId qRTAreaID) {
+		QRTAreaID = qRTAreaID;
+	}
+
 	@Override
 	public String toString() {
 		return "Post{id=" + id + ", content=" + content + ", title=" + title + ", mediaURL=" + mediaURL
-				+ ", createdDate=" + createdDate + ", creatorName=" + creatorName + "}";
+				+ ", createdDate=" + createdDate + ", creatorName=" + creatorName + ", QRTAreaID=" + QRTAreaID + "}";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(content, createdDate, creatorName, id, mediaURL, title);
+		return Objects.hash(QRTAreaID, content, createdDate, creatorName, id, mediaURL, title);
 	}
 
 	@Override
@@ -88,9 +97,10 @@ public class Post {
 		if (getClass() != obj.getClass())
 			return false;
 		Post other = (Post) obj;
-		return Objects.equals(content, other.content) && Objects.equals(createdDate, other.createdDate)
-				&& Objects.equals(creatorName, other.creatorName) && Objects.equals(id, other.id)
-				&& Objects.equals(mediaURL, other.mediaURL) && Objects.equals(title, other.title);
+		return Objects.equals(QRTAreaID, other.QRTAreaID) && Objects.equals(content, other.content)
+				&& Objects.equals(createdDate, other.createdDate) && Objects.equals(creatorName, other.creatorName)
+				&& Objects.equals(id, other.id) && Objects.equals(mediaURL, other.mediaURL)
+				&& Objects.equals(title, other.title);
 	}
 
 }
