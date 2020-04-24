@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @JsonInclude(Include.NON_NULL)
-public class IsolationArea {
+public class QuarantineArea {
 
 	@JsonSerialize(using = ToStringSerializer.class)
 	private ObjectId id;
@@ -24,7 +24,7 @@ public class IsolationArea {
 	private List<Regulation> regulationList;
 
 	private enum Region {
-		MienBac, MienTrung, MienNam
+		MIEN_BAC, MIEN_TRUNG, MIEN_NAM
 	};
 
 	public ObjectId getId() {
@@ -101,7 +101,7 @@ public class IsolationArea {
 
 	@Override
 	public String toString() {
-		return "IsolationArea{id=" + id + ", name=" + name + ", password=" + password + ", address=" + address
+		return "QuarantineArea{id=" + id + ", name=" + name + ", password=" + password + ", address=" + address
 				+ ", region=" + region + ", guestList=" + guestList + ", ticketList=" + ticketList + ", postList="
 				+ postList + ", regulationList=" + regulationList + "}";
 	}
@@ -114,7 +114,7 @@ public class IsolationArea {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		IsolationArea other = (IsolationArea) obj;
+		QuarantineArea other = (QuarantineArea) obj;
 		return Objects.equals(address, other.address) && Objects.equals(guestList, other.guestList)
 				&& Objects.equals(id, other.id) && Objects.equals(name, other.name)
 				&& Objects.equals(password, other.password) && Objects.equals(postList, other.postList)
