@@ -4,13 +4,23 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.mongodb.starter.manager.ListManager;
+import com.mongodb.starter.repositories.ContactRepository;
+
 import org.bson.types.ObjectId;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @JsonInclude(Include.NON_NULL)
-public class QuarantineArea {
+public class QuarantineArea extends ObjWithID {
+
+	public class ContactManager extends ListManager<Contact> implements ContactRepository {
+		public ContactManager(List<Contact> managedList) {
+			super(managedList);
+		}
+	}
 
 	@JsonSerialize(using = ToStringSerializer.class)
 	private ObjectId id;
@@ -18,10 +28,13 @@ public class QuarantineArea {
 	private String password;
 	private String address;
 	private Region region;
+	private List<Contact> contactList;
 	private List<Guest> guestList;
-	private List<Ticket> ticketList;
 	private List<Post> postList;
 	private List<Regulation> regulationList;
+	private List<Ticket> ticketList;
+
+	private ContactManager contactManager = new ContactManager(contactList);
 
 	private enum Region {
 		MIEN_BAC, MIEN_TRUNG, MIEN_NAM
@@ -63,6 +76,15 @@ public class QuarantineArea {
 		this.region = region;
 	}
 
+	public List<Contact> getContactList() {
+		return contactList;
+	}
+
+	public void setContactList(List<Contact> contactList) {
+		this.contactList = contactList;
+		this.contactManager.setManagedList(contactList);
+	}
+
 	public List<Guest> getGuestList() {
 		return guestList;
 	}
@@ -99,11 +121,15 @@ public class QuarantineArea {
 		this.id = id;
 	}
 
+	public ContactManager getContactManager() {
+		return contactManager;
+	}
+
 	@Override
 	public String toString() {
 		return "QuarantineArea{id=" + id + ", name=" + name + ", password=" + password + ", address=" + address
-				+ ", region=" + region + ", guestList=" + guestList + ", ticketList=" + ticketList + ", postList="
-				+ postList + ", regulationList=" + regulationList + "}";
+				+ ", region=" + region + ", contactList=" + contactList + ", guestList=" + guestList + ", postList="
+				+ postList + ", regulationList=" + regulationList + ", ticketList=" + ticketList + "}";
 	}
 
 	@Override
@@ -115,16 +141,16 @@ public class QuarantineArea {
 		if (getClass() != obj.getClass())
 			return false;
 		QuarantineArea other = (QuarantineArea) obj;
-		return Objects.equals(address, other.address) && Objects.equals(guestList, other.guestList)
-				&& Objects.equals(id, other.id) && Objects.equals(name, other.name)
-				&& Objects.equals(password, other.password) && Objects.equals(postList, other.postList)
-				&& region == other.region && Objects.equals(regulationList, other.regulationList)
-				&& Objects.equals(ticketList, other.ticketList);
+		return Objects.equals(address, other.address) && Objects.equals(contactList, other.contactList)
+				&& Objects.equals(guestList, other.guestList) && Objects.equals(id, other.id)
+				&& Objects.equals(name, other.name) && Objects.equals(password, other.password)
+				&& Objects.equals(postList, other.postList) && region == other.region
+				&& Objects.equals(regulationList, other.regulationList) && Objects.equals(ticketList, other.ticketList);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(address, guestList, id, name, password, postList, region, regulationList, ticketList);
+		return Objects.hash(address, contactList, guestList, id, name, password, postList, region, regulationList,
+				ticketList);
 	}
-
 }
