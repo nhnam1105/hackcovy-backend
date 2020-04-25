@@ -7,26 +7,26 @@ import java.util.List;
 
 @Repository
 public interface RegulationRepository {
-    Regulation save(Regulation regulation);
+	Regulation save(Regulation regulation);
 
-    List<Regulation> saveAll(List<Regulation> regulations);
+	List<Regulation> saveAll(List<Regulation> regulations);
 
-    List<Regulation> findAll();
+	List<Regulation> findAll();
 
-    List<Regulation> findAll(List<String> ids);
+	List<Regulation> findAll(List<String> ids);
 
-    Regulation findOne(String id);
+	Regulation findOne(String id);
 
-    long count();
+	long count();
 
-    long delete(String id);
+	long delete(String id);
 
-    long delete(List<String> ids);
+	long delete(List<String> ids);
 
-    long deleteAll();
+	long deleteAll();
 
-    Regulation update(Regulation regulation);
+	Regulation update(Regulation regulation);
 
-    long update(List<Regulation> regulations);
+	long update(List<Regulation> regulations);
 
 }

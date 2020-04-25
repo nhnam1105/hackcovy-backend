@@ -8,26 +8,25 @@ import java.util.List;
 @Repository
 public interface TicketRepository {
 
-    Ticket save(Ticket ticket);
+	Ticket save(Ticket ticket);
 
-    List<Ticket> saveAll(List<Ticket> tickets);
+	List<Ticket> saveAll(List<Ticket> tickets);
 
-    List<Ticket> findAll();
+	List<Ticket> findAll();
 
-    List<Ticket> findAll(List<String> ids);
+	List<Ticket> findAll(List<String> ids);
 
-    Ticket findOne(String id);
+	Ticket findOne(String id);
 
-    long count();
+	long count();
 
-    long delete(String id);
+	long delete(String id);
 
-    long delete(List<String> ids);
+	long delete(List<String> ids);
 
-    long deleteAll();
+	long deleteAll();
 
-    Ticket update(Ticket ticket);
+	Ticket update(Ticket ticket);
 
-    long update(List<Ticket> tickets);
-
+	long update(List<Ticket> tickets);
 }

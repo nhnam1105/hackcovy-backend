@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Objects;
 
 @JsonInclude(Include.NON_NULL)
-public class Guest {
+public class Guest extends ObjWithID {
 
 	@JsonSerialize(using = ToStringSerializer.class)
-    private ObjectId id;
+	private ObjectId id;
 	private String firstName;
 	private String lastName;
 	private Date DOB;

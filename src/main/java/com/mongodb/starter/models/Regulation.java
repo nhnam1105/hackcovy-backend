@@ -9,7 +9,7 @@ import org.bson.types.ObjectId;
 import java.util.Objects;
 
 @JsonInclude(Include.NON_NULL)
-public class Regulation {
+public class Regulation extends ObjWithID {
 
 	@JsonSerialize(using = ToStringSerializer.class)
 	private ObjectId id;

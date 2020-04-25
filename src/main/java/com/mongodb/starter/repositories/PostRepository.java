@@ -8,26 +8,25 @@ import java.util.List;
 @Repository
 public interface PostRepository {
 
-    Post save(Post post);
+	Post save(Post post);
 
-    List<Post> saveAll(List<Post> posts);
+	List<Post> saveAll(List<Post> posts);
 
-    List<Post> findAll();
+	List<Post> findAll();
 
-    List<Post> findAll(List<String> ids);
+	List<Post> findAll(List<String> ids);
 
-    Post findOne(String id);
+	Post findOne(String id);
 
-    long count();
+	long count();
 
-    long delete(String id);
+	long delete(String id);
 
-    long delete(List<String> ids);
+	long delete(List<String> ids);
 
-    long deleteAll();
+	long deleteAll();
 
-    Post update(Post post);
+	Post update(Post post);
 
-    long update(List<Post> posts);
-
+	long update(List<Post> posts);
 }
