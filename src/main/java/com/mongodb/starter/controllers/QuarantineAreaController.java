@@ -2,6 +2,7 @@ package com.mongodb.starter.controllers;
 
 import com.mongodb.starter.models.Contact;
 import com.mongodb.starter.models.QuarantineArea;
+import com.mongodb.starter.repositories.ContactRepository;
 import com.mongodb.starter.repositories.QuarantineAreaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +20,14 @@ public class QuarantineAreaController {
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(QuarantineAreaController.class);
 	private final QuarantineAreaRepository quarantineAreaRepository;
+//	private final ContactRepository contactRepository;
 
 	public QuarantineAreaController(QuarantineAreaRepository quarantineAreaRepository) {
 		this.quarantineAreaRepository = quarantineAreaRepository;
+//		this.contactRepository = contactRepository;
 	}
 
+//POST for QA
 	@PostMapping("quarantine_area")
 	@ResponseStatus(HttpStatus.CREATED)
 	public QuarantineArea postQuarantineArea(@RequestBody QuarantineArea quarantineArea) {
@@ -35,24 +39,19 @@ public class QuarantineAreaController {
 	public List<QuarantineArea> postQuarantineAreas(@RequestBody List<QuarantineArea> quarantineAreas) {
 		return quarantineAreaRepository.saveAll(quarantineAreas);
 	}
+//END POST for QA
 
-	@PostMapping("quarantine_area/{id}/contact")
-	public ResponseEntity<Contact> addContact(@PathVariable String id, @RequestBody Contact contact) {
-		QuarantineArea quarantineArea = quarantineAreaRepository.findOne(id);
-		if (quarantineArea == null)
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		quarantineArea.getContactManager().save(contact);
-		return ResponseEntity.ok(contact);
-	}
-
-	@PostMapping("quarantine_area/{id}/contacts")
-	public ResponseEntity<List<Contact>> addContacts(@PathVariable String id, @RequestBody List<Contact> contacts) {
-		QuarantineArea quarantineArea = quarantineAreaRepository.findOne(id);
-		if (quarantineArea == null)
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		quarantineArea.getContactManager().saveAll(contacts);
-		return ResponseEntity.ok(contacts);
-	}
+////POST for Contacts
+//	@PostMapping("quarantine_area/{QAid}/contact")
+//	public QuarantineArea addContact(@PathVariable String qaID, @RequestBody Contact contact) {
+//		return contactRepository.save(qaID, contact);
+//	}
+//
+//	@PostMapping("quarantine_area/{QAid}/contacts")
+//	public QuarantineArea addContacts(@PathVariable String qaID, @RequestBody List<Contact> contacts) {
+//		return contactRepository.saveAll(qaID, contacts);
+//	}
+////END POST for Contacts
 
 	// TODO: add guest
 	// TODO: add guests
@@ -66,6 +65,7 @@ public class QuarantineAreaController {
 	// TODO: add ticket
 	// TODO: add tickets
 
+//GET for QA
 	@GetMapping("quarantine_areas")
 	public List<QuarantineArea> getQuarantineAreas() {
 		return quarantineAreaRepository.findAll();
@@ -89,11 +89,48 @@ public class QuarantineAreaController {
 	public Long getCount() {
 		return quarantineAreaRepository.count();
 	}
+//END GET for QA
 
-	// TODO: get contacts
-	// TODO: get contact with certain ID
-	// TODO: get contacts with certain IDs
-	// TODO: get contacts count
+////GET for Contacts	
+//	@GetMapping("quarantine_area/{QAid}/contacts")
+//	public ResponseEntity<List<Contact>> getContacts(@PathVariable String QAid) {
+//		QuarantineArea quarantineArea = quarantineAreaRepository.findOne(QAid);
+//		if (quarantineArea == null)
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//		return ResponseEntity.ok(quarantineArea.getContactManager().findAll());
+//	}
+//
+//	@GetMapping("quarantine_area/{QAid}/contact/{Cid}")
+//	public ResponseEntity<Contact> getContact(@PathVariable String QAid, @PathVariable String Cid) {
+//		QuarantineArea quarantineArea = quarantineAreaRepository.findOne(QAid);
+//		if (quarantineArea == null)
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//		Contact contact = quarantineArea.getContactManager().findOne(Cid);
+//		if (contact == null)
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//		return ResponseEntity.ok(contact);
+//	}
+//
+//	@GetMapping("quarantine_area/{QAid}/contacts/{Cids}")
+//	public ResponseEntity<List<Contact>> getContacts(@PathVariable String QAid, @PathVariable String Cids) {
+//		QuarantineArea quarantineArea = quarantineAreaRepository.findOne(QAid);
+//		if (quarantineArea == null)
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//		List<String> listIds = asList(Cids.split(","));
+//		List<Contact> result = quarantineArea.getContactManager().findAll(listIds);
+//		if (result == null)
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//		return ResponseEntity.ok(result);
+//	}
+//
+//	@GetMapping("quarantine_area/{QAid}/contacts/count")
+//	public ResponseEntity<Long> getContactCount(@PathVariable String QAid) {
+//		QuarantineArea quarantineArea = quarantineAreaRepository.findOne(QAid);
+//		if (quarantineArea == null)
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//		return ResponseEntity.ok(quarantineArea.getContactManager().count());
+//	}
+////END GET for Contacts
 
 	// TODO: get guests
 	// TODO: get guest with certain ID

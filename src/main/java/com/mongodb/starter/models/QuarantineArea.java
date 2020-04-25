@@ -4,23 +4,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.mongodb.starter.manager.ListManager;
-import com.mongodb.starter.repositories.ContactRepository;
 
 import org.bson.types.ObjectId;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @JsonInclude(Include.NON_NULL)
 public class QuarantineArea extends ObjWithID {
-
-	public class ContactManager extends ListManager<Contact> implements ContactRepository {
-		public ContactManager(List<Contact> managedList) {
-			super(managedList);
-		}
-	}
 
 	@JsonSerialize(using = ToStringSerializer.class)
 	private ObjectId id;
@@ -33,8 +24,6 @@ public class QuarantineArea extends ObjWithID {
 	private List<Post> postList;
 	private List<Regulation> regulationList;
 	private List<Ticket> ticketList;
-
-	private ContactManager contactManager = new ContactManager(contactList);
 
 	private enum Region {
 		MIEN_BAC, MIEN_TRUNG, MIEN_NAM
@@ -82,7 +71,6 @@ public class QuarantineArea extends ObjWithID {
 
 	public void setContactList(List<Contact> contactList) {
 		this.contactList = contactList;
-		this.contactManager.setManagedList(contactList);
 	}
 
 	public List<Guest> getGuestList() {
@@ -119,10 +107,6 @@ public class QuarantineArea extends ObjWithID {
 
 	public void setId(ObjectId id) {
 		this.id = id;
-	}
-
-	public ContactManager getContactManager() {
-		return contactManager;
 	}
 
 	@Override

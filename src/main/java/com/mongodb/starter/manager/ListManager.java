@@ -1,43 +1,57 @@
 package com.mongodb.starter.manager;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.mongodb.starter.models.ObjWithID;
+import com.mongodb.starter.models.QuarantineArea;
 
 import org.bson.types.ObjectId;
 
 import java.util.List;
 import java.util.ArrayList;
 
+@JsonInclude(Include.NON_NULL)
 public abstract class ListManager<T extends ObjWithID> {
 
-	private List<T> managedList;
+	@JsonSerialize(using = ToStringSerializer.class)
+	protected QuarantineArea boss;
 
-	public List<T> getManagedList() {
-		return managedList;
+	public QuarantineArea getBoss() {
+		return boss;
 	}
 
-	public void setManagedList(List<T> managedList) {
-		this.managedList = managedList;
+	public void setBoss(QuarantineArea boss) {
+		this.boss = boss;
 	}
 
-	public ListManager(List<T> managedList) {
-		setManagedList(managedList);
+	public ListManager() {
+
 	}
+
+	public ListManager(QuarantineArea boss) {
+		setBoss(boss);
+	}
+
+	protected abstract List<T> getList();
 
 	public T save(T t) {
 		t.setId(new ObjectId());
-		managedList.add(t);
+		getList();
+		
 		return t;
 	}
 
 	public List<T> saveAll(List<T> ts) {
 		ts.forEach(t -> t.setId(new ObjectId()));
-		managedList.addAll(ts);
+		getList().addAll(ts);
 		return ts;
 	}
 
 	public List<T> findAll() {
 		List<T> result = new ArrayList<T>();
-		result.addAll(managedList);
+		result.addAll(getList());
 		return result;
 	}
 
@@ -54,14 +68,14 @@ public abstract class ListManager<T extends ObjWithID> {
 	}
 
 	public T findOne(String id) {
-		for (int i = 0; i < managedList.size(); i++)
-			if (id == managedList.get(i).getId().toHexString())
-				return managedList.get(i);
+		for (int i = 0; i < getList().size(); i++)
+			if (id == getList().get(i).getId().toHexString())
+				return getList().get(i);
 		return null;
 	}
 
 	public long count() {
-		return managedList.size();
+		return getList().size();
 	}
 
 	public long delete(String id) {
@@ -71,7 +85,7 @@ public abstract class ListManager<T extends ObjWithID> {
 			if (result == null)
 				break;
 			else {
-				managedList.remove(result);
+				getList().remove(result);
 				deletedCount++;
 			}
 		}
@@ -86,8 +100,8 @@ public abstract class ListManager<T extends ObjWithID> {
 	}
 
 	public long deleteAll() {
-		long deletedCount = managedList.size();
-		managedList.clear();
+		long deletedCount = getList().size();
+		getList().clear();
 		return deletedCount;
 	}
 
@@ -103,9 +117,9 @@ public abstract class ListManager<T extends ObjWithID> {
 		if (old == null)
 			return null;
 		else {
-			int index = managedList.indexOf(old);
-			managedList.remove(index);
-			managedList.add(index, t);
+			int index = getList().indexOf(old);
+			getList().remove(index);
+			getList().add(index, t);
 			return t;
 		}
 	}
