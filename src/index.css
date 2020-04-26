@@ -1,0 +1,34 @@
+html,
+body {
+  font-family: 'Be Vietnam', sans-serif !important;
+}
+
+.card {
+  border-radius: 10px !important;
+}
+
+/** map **/
+svg {
+  display: block;
+  margin: auto;
+}
+.land {
+  fill: #aaaaaa;
+  fill-opacity: 1;
+  stroke: white;
+  stroke-opacity: 1;
+  stroke-width: 0.5;
+}
+
+.infected:hover {
+  cursor: pointer;
+  fill: #dc3545 !important;
+}
+
+.modal.show {
+  display: block !important;
+}
+
+.modal-open {
+  display: block !important;
+}
