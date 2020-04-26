@@ -15,5 +15,5 @@
 - Build the project with : `mvn clean package`.
 
 ## Swagger
-- The API can be seen at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
+- The API can be seen at [http://localhost:8082/swagger-ui.html](http://localhost:8082/swagger-ui.html).
 - You can also try the entire REST API directly from the Swagger interface!

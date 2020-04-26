@@ -13,7 +13,6 @@ import java.util.Objects;
 public class Post extends ObjWithID {
 
 	@JsonSerialize(using = ToStringSerializer.class)
-	private ObjectId id;
 	private String content;
 	private String title;
 	private String mediaURL;

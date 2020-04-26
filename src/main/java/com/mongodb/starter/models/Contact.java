@@ -12,7 +12,6 @@ import java.util.Objects;
 public class Contact extends ObjWithID {
 
 	@JsonSerialize(using = ToStringSerializer.class)
-	private ObjectId id;
 	private String contactName;
 	private String contactNumber;
 

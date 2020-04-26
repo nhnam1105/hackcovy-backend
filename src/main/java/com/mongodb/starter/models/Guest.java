@@ -14,7 +14,6 @@ import java.util.Objects;
 public class Guest extends ObjWithID {
 
 	@JsonSerialize(using = ToStringSerializer.class)
-	private ObjectId id;
 	private String firstName;
 	private String lastName;
 	private Date DOB;

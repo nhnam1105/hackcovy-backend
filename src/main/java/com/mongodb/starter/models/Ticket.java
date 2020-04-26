@@ -13,7 +13,6 @@ import java.util.Objects;
 public class Ticket extends ObjWithID {
 
 	@JsonSerialize(using = ToStringSerializer.class)
-	private ObjectId id;
 	private String subject;
 	private String content;
 	private Date createdDate;

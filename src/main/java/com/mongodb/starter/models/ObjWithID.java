@@ -10,7 +10,7 @@ import org.bson.types.ObjectId;
 public abstract class ObjWithID {
 
 	@JsonSerialize(using = ToStringSerializer.class)
-	private ObjectId id;
+	protected ObjectId id;
 
 	public ObjectId getId() {
 		return id;

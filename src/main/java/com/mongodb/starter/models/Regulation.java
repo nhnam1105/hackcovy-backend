@@ -12,7 +12,6 @@ import java.util.Objects;
 public class Regulation extends ObjWithID {
 
 	@JsonSerialize(using = ToStringSerializer.class)
-	private ObjectId id;
 	private String content;
 	private String category;
 	private int sortingOrder;

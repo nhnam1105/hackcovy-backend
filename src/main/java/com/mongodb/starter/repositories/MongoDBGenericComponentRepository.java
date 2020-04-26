@@ -13,6 +13,7 @@ import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReplaceOneModel;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.model.WriteModel;
+import com.mongodb.lang.Nullable;
 import com.mongodb.client.model.Projections;
 import com.mongodb.starter.dtos.AverageAgeDTO;
 import com.mongodb.starter.models.ObjWithID;
@@ -27,17 +28,18 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.mongodb.client.model.Accumulators.avg;
-import static com.mongodb.client.model.Aggregates.group;
-import static com.mongodb.client.model.Aggregates.project;
+import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.in;
-import static com.mongodb.client.model.Projections.include;
-import static com.mongodb.client.model.Projections.excludeId;
+import static com.mongodb.client.model.Projections.*;
 import static com.mongodb.client.model.ReturnDocument.AFTER;
 import static java.util.Arrays.asList;
 
@@ -53,74 +55,149 @@ public abstract class MongoDBGenericComponentRepository<T extends ObjWithID> imp
 	private MongoCollection<QuarantineArea> quarantineAreaCollection;
 	protected String listName;
 
+	protected abstract List<T> getList(QuarantineArea quarantineArea);
+
+	private static FindOneAndUpdateOptions options = new FindOneAndUpdateOptions().returnDocument(AFTER);
+
 	@PostConstruct
 	void init() {
 		quarantineAreaCollection = client.getDatabase("hackcovy").getCollection("quarantine_areas",
 				QuarantineArea.class);
 	}
 
+	/**
+	 * Returns null if qaID not found
+	 */
 	@Override
 	public QuarantineArea save(String qaID, T t) {
 		t.setId(new ObjectId());
-		FindOneAndUpdateOptions options = new FindOneAndUpdateOptions().returnDocument(AFTER);
 		return quarantineAreaCollection.findOneAndUpdate(eq("_id", new ObjectId(qaID)), Updates.push(listName, t),
 				options);
 	}
 
+	/**
+	 * Returns null if qaID not found
+	 */
 	@Override
 	public QuarantineArea saveAll(String qaID, List<T> ts) {
 		ts.forEach(t -> t.setId(new ObjectId()));
-		FindOneAndUpdateOptions options = new FindOneAndUpdateOptions().returnDocument(AFTER);
-		return quarantineAreaCollection.findOneAndUpdate(eq("_id", new ObjectId(qaID)), Updates.push(listName, ts),
+		return quarantineAreaCollection.findOneAndUpdate(eq("_id", new ObjectId(qaID)), Updates.pushEach(listName, ts),
 				options);
 	}
 
+	/**
+	 * May return empty list
+	 */
 	@Override
 	public List<T> findAll(String qaID) {
-		return (List<T>) quarantineAreaCollection.find(eq("_id", new ObjectId(qaID))).projection(include(listName))
-				.into(new ArrayList<>());
+		return getList(getQA(qaID));
 	}
 
+	/**
+	 * May return empty list
+	 */
 	@Override
 	public List<T> findAll(String qaID, List<String> ids) {
-		return (List<T>) quarantineAreaCollection
-				.find(and(eq("_id", new ObjectId(qaID)), in(listName + "._id", mapToObjectIds(ids))))
-				.projection(include(listName)).into(new ArrayList<>());
+		List<T> ts = findAll(qaID);
+		if (ts.isEmpty())
+			return new ArrayList<T>();
+		List<ObjectId> convertedIDs = mapToObjectIds(ids);
+		Predicate<T> matchID = t -> convertedIDs.contains(t.getId());
+		return ts.stream().filter(matchID).collect(Collectors.toList());
 	}
 
+	/**
+	 * May return null
+	 */
 	@Override
 	public T findOne(String qaID, String id) {
-		return null; //TODO
+		List<T> ts = findAll(qaID);
+		if (ts.isEmpty())
+			return null;
+		Predicate<T> matchID = t -> t.getId().toHexString().equals(id);
+		return ts.stream().filter(matchID).findAny().orElse(null);
 	}
 
+	@Nullable
+	private QuarantineArea getQA(String qaID) {
+		return quarantineAreaCollection.find(eq("_id", new ObjectId(qaID))).first();
+	}
+
+	/**
+	 * Return -1 if qaID not found
+	 */
 	@Override
 	public long count(String qaID) {
-		return 0; //TODO
+		QuarantineArea qa = getQA(qaID);
+		if (qa == null)
+			return -1;
+		if (getList(qa) == null)
+			return 0;
+		return getList(qa).size();
 	}
 
 	@Override
 	public long delete(String qaID, String id) {
-		return 0; //TODO
+		if (getQA(qaID) == null)
+			return 0;
+		T item = findOne(qaID, id);
+		if (item == null)
+			return 0;
+		quarantineAreaCollection.findOneAndUpdate(eq("_id", new ObjectId(qaID)), Updates.pull(listName, item));
+		return 1;
 	}
 
 	@Override
 	public long delete(String qaID, List<String> ids) {
-		return 0; //TODO
+		if (getQA(qaID) == null)
+			return 0;
+		List<T> items = findAll(qaID, ids);
+		if (items.isEmpty())
+			return 0;
+		quarantineAreaCollection.findOneAndUpdate(eq("_id", new ObjectId(qaID)), Updates.pullAll(listName, items));
+		return items.size();
 	}
 
 	@Override
 	public long deleteAll(String qaID) {
-		return 0; //TODO
+		if (getQA(qaID) == null)
+			return 0;
+		long count = count(qaID);
+		if (count <= 0)
+			return 0;
+		quarantineAreaCollection.findOneAndUpdate(eq("_id", new ObjectId(qaID)),
+				Updates.set(listName, new ArrayList<T>()));
+		return count;
 	}
 
+	/**
+	 * May return null
+	 */
 	@Override
-	public T update(String qaID, T t) {
-		return null; //TODO
+	public T update(String qaID, T newT) {
+//		QuarantineArea qa = getQA(qaID);
+//		if (qa == null)
+//			return null;
+//		List<T> ts = getList(qa);
+//		if (ts == null)
+//			return null;
+//		for (int i = 0; i < ts.size(); i++) {
+//			T t = ts.get(i);
+//			if (newT.getId() == null)
+//				throw new NullPointerException();
+//			if (t.getId().toHexString().equals(newT.getId().toHexString())) {
+//				t = newT;
+//				quarantineAreaCollection.findOneAndUpdate(eq("_id", new ObjectId(qaID)), Updates.set(listName, ts),
+//						options);
+//				return newT;
+//			}
+//		}
+		return null;
 	}
 
 	@Override
 	public long update(String qaID, List<T> ts) {
-		return 0; //TODO
+		return 0; // TODO
 	}
 
 	private List<ObjectId> mapToObjectIds(List<String> ids) {

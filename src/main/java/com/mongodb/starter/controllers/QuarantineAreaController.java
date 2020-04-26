@@ -41,17 +41,6 @@ public class QuarantineAreaController {
 	}
 //END POST for QA
 
-////POST for Contacts
-//	@PostMapping("quarantine_area/{QAid}/contact")
-//	public QuarantineArea addContact(@PathVariable String qaID, @RequestBody Contact contact) {
-//		return contactRepository.save(qaID, contact);
-//	}
-//
-//	@PostMapping("quarantine_area/{QAid}/contacts")
-//	public QuarantineArea addContacts(@PathVariable String qaID, @RequestBody List<Contact> contacts) {
-//		return contactRepository.saveAll(qaID, contacts);
-//	}
-////END POST for Contacts
 
 	// TODO: add guest
 	// TODO: add guests
