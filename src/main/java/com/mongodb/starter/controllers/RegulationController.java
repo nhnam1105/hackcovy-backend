@@ -14,6 +14,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api")
 public class RegulationController {
